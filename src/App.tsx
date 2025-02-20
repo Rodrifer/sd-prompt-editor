@@ -1,23 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Button } from './components/ui/button'
-import { Calendar } from './components/ui/calendar'
-import { Switch } from '@radix-ui/react-switch'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Layout from './components/custom/Layout';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <Button variant="destructive"> Click </Button>
-        <Calendar mode="range" defaultMonth={new Date(2023, 0, 1)} />
-        <Switch defaultChecked  className="data-[state=checked]:bg-primary" />
-      </div>
-    </>
-  )
-}
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
+};
 
-export default App
+export default App;
