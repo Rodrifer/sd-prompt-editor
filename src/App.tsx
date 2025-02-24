@@ -1,12 +1,15 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import Layout from './components/custom/Layout';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Layout from "./components/custom/Layout";
+import { PromptProvider } from "./context/PromptContext";
 
 const App: React.FC = () => {
   return (
-    <Layout>
-      <Outlet />
-    </Layout>
+    <PromptProvider>
+      <Layout>
+        <Outlet />
+      </Layout>
+    </PromptProvider>
   );
 };
 

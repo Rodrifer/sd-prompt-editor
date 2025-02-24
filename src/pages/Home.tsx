@@ -1,10 +1,13 @@
-import React from 'react';
+import React from "react";
+import { Button } from "../components/ui/button";
 
 const Home: React.FC = () => {
   return (
-    <div className="container mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Welcome to the Home Page</h1>
-      <p>This is the main content area of your application.</p>
+    <div className="w-full h-full flex flex-col items-center justify-center space-y-8 p-4">
+      <div className="w-64 h-64 bg-gray-200 rounded-lg flex items-center justify-center">
+        <span className="text-gray-500">Image Placeholder</span>
+      </div>
+      <Button className="w-32">Save</Button>
     </div>
   );
 };
