@@ -10,6 +10,7 @@ import {
 import { Button } from "../ui/button";
 import { StableDiffusionService } from "../../services/stable-diffusion.service";
 import { PromptContext } from "../../context/PromptContext";
+import { uploadImageToCloudinary } from "../../services/cloudinary.service";
 
 const sidebarService = StableDiffusionService.getInstance();
 
@@ -52,7 +53,13 @@ const Sidebar: React.FC = () => {
         console.error("No se pudo generar la imagen.");
         return;
       }
-      setImage(result.artifacts[0].base64);
+
+      const base64Image = result.artifacts[0].base64;
+      //setImage(base64Image);
+
+      const uploadResponse = await uploadImageToCloudinary(`data:image/png;base64,${base64Image}`);
+      setImage(uploadResponse.url);
+      console.log(uploadResponse);
     } catch (error) {
       console.error("Error al llamar a la API:", error);
     }

@@ -9,7 +9,7 @@ const Home: React.FC = () => {
     <div className="w-full h-full flex flex-col items-center justify-center space-y-8 p-4">
       <div className="w-96 h-96 bg-gray-200 rounded-lg flex items-center justify-center">
         {image && (
-          <img src={`data:image/png;base64,${image}`} alt="Generated" />
+          <img src={image} alt="Generated" />
         )}
       </div>
       <Button className="w-32">Save</Button>
