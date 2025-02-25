@@ -1,14 +1,26 @@
 import axios from "axios";
 import { STABLE_DIFFUSION_CONFIG } from "@/config/stable-diffusion";
 
+export interface TextPrompt {
+  text: string;
+  weight: number;
+}
+
 export interface StableDiffusionParams {
-  prompt: string;
-  negative_prompt?: string;
+  text_prompts?: TextPrompt[];
   width?: number;
   height?: number;
   steps?: number;
   cfg_scale?: number;
   samples?: number;
+}
+
+interface StableDiffusionResponse {
+  artifacts: {
+    base64: string;
+    seed: number;
+    finishReason: string;
+  }[];
 }
 
 export class StableDiffusionService {
@@ -29,7 +41,9 @@ export class StableDiffusionService {
     return StableDiffusionService.instance;
   }
 
-  async generateImage(params: StableDiffusionParams): Promise<string | null> {
+  async generateImage(
+    params: StableDiffusionParams
+  ): Promise<StableDiffusionResponse | null> {
     if (!this.apiKey) {
       console.error("API Key is required");
       return null;
@@ -42,10 +56,11 @@ export class StableDiffusionService {
 
     try {
       const response = await axios.post(
-        `${STABLE_DIFFUSION_CONFIG.BASE_URL}${STABLE_DIFFUSION_CONFIG.ENDPOINTS.TEXT_TO_IMAGE}`,
+        `${STABLE_DIFFUSION_CONFIG.BASE_URL}${STABLE_DIFFUSION_CONFIG.ENDPOINTS.SDXL_10}`,
         requestParams,
         {
           headers: {
+            Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: `Bearer ${this.apiKey}`,
           },
@@ -53,15 +68,8 @@ export class StableDiffusionService {
         }
       );
 
-      // Convert image to base64
-      const base64Image = btoa(
-        new Uint8Array(response.data).reduce(
-          (data, byte) => data + String.fromCharCode(byte),
-          ""
-        )
-      );
-
-      return `data:image/png;base64,${base64Image}`;
+      const jsonData = JSON.parse(new TextDecoder().decode(response.data));
+      return jsonData;
     } catch (error) {
       console.error("Error generating image:", error);
       return null;

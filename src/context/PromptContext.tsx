@@ -5,18 +5,18 @@ interface PromptContextType {
   setPrompt: (prompt: string) => void;
   negativePrompt: string;
   setNegativePrompt: (negativePrompt: string) => void;
-  imageUrl: string | null;
-  setImageUrl: (imageUrl: string | null) => void;
+  image: string | null;
+  setImage: (image: string | null) => void;
 }
 
-const PromptContext = createContext<PromptContextType | undefined>(undefined);
+export const PromptContext = createContext<PromptContextType | undefined>(undefined);
 
 export const PromptProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [prompt, setPrompt] = useState<string>("");
   const [negativePrompt, setNegativePrompt] = useState<string>("");
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(null);
 
   return (
     <PromptContext.Provider
@@ -25,8 +25,8 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
         setPrompt,
         negativePrompt,
         setNegativePrompt,
-        imageUrl,
-        setImageUrl,
+        image,
+        setImage,
       }}
     >
       {children}
