@@ -1,0 +1,121 @@
+erDiagram
+    USER {
+        id int PK
+        username string
+        email string
+        password_hash string
+        registration_date date
+        last_login datetime
+        is_premium boolean
+    }
+    
+    PROJECT {
+        id int PK
+        user_id int FK
+        name string
+        description text
+        creation_date datetime
+        update_date datetime
+        is_public boolean
+    }
+    
+    PROMPT {
+        id int PK
+        project_id int FK
+        name string
+        content text
+        creation_date datetime
+        update_date datetime
+        is_favorite boolean
+    }
+    
+    IMAGE {
+        id int PK
+        prompt_id int FK
+        image_url string
+        size string
+        metadata json
+        generation_date datetime
+        model_id int FK
+        config_id int FK
+    }
+    
+    MODEL {
+        id int PK
+        name string
+        description text
+        version string
+        url string
+        is_active boolean
+    }
+    
+    CONFIG {
+        id int PK
+        name string
+        parameters json
+        user_id int FK
+        is_default boolean
+    }
+    
+    TEMPLATE {
+        id int PK
+        name string
+        structure text
+        description text
+        user_id int FK
+        is_public boolean
+    }
+    
+    TAG {
+        id int PK
+        name string
+        user_id int FK
+    }
+    
+    BLOCK {
+        id int PK
+        name string
+        content text
+        type string
+        user_id int FK
+    }
+    
+    COLLECTION {
+        id int PK
+        name string
+        description text
+        user_id int FK
+    }
+    
+    PROMPT_TAG {
+        prompt_id int PK,FK
+        tag_id int PK,FK
+    }
+    
+    PROMPT_BLOCK {
+        prompt_id int PK,FK
+        block_id int PK,FK
+        order int
+    }
+    
+    COLLECTION_PROMPT {
+        collection_id int PK,FK
+        prompt_id int PK,FK
+    }
+    
+    USER ||--o{ PROJECT : "creates"
+    USER ||--o{ CONFIG : "has"
+    USER ||--o{ TEMPLATE : "creates"
+    USER ||--o{ TAG : "creates"
+    USER ||--o{ BLOCK : "creates"
+    USER ||--o{ COLLECTION : "creates"
+    
+    PROJECT ||--o{ PROMPT : "contains"
+    
+    PROMPT ||--o{ IMAGE : "generates"
+    PROMPT }o--o{ TAG : "has"
+    PROMPT }o--o{ BLOCK : "uses"
+    PROMPT }o--o{ COLLECTION : "belongs to"
+    
+    IMAGE }o--|| MODEL : "uses"
+    IMAGE }o--|| CONFIG : "uses"

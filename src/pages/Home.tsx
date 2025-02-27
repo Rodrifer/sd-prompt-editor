@@ -11,6 +11,9 @@ const Home: React.FC = () => {
         {image && (
           <img src={image} alt="Generated" />
         )}
+        {!image && (
+          <p>No image generated yet</p>
+        )}
       </div>
       <Button className="w-32">Save</Button>
     </div>
