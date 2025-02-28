@@ -6,15 +6,14 @@ import {
   TagIcon, 
   LayoutGridIcon
 } from 'lucide-react';
+import { ProjectDialog } from './ProjectDialog';
 
 const Menu: React.FC = () => {
   return (
     <div className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="container mx-auto flex justify-between items-center p-4">
         <div className="flex space-x-4">
-          <Button variant="ghost" size="sm">
-            <FolderIcon className="mr-2 h-4 w-4" /> Projects
-          </Button>
+          <ProjectDialog />
           <Button variant="ghost" size="sm">
             <LayersIcon className="mr-2 h-4 w-4" /> Models
           </Button>

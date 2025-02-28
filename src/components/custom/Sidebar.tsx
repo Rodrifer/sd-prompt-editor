@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
+import { ProjectSelector } from "./ProjectSelector";
 import { StableDiffusionService } from "../../services/stable-diffusion.service";
 import { PromptContext } from "../../context/PromptContext";
 import { uploadImageToCloudinary } from "../../services/cloudinary.service";
@@ -68,6 +69,7 @@ const Sidebar: React.FC = () => {
   return (
     <aside className="w-96 bg-white border-r p-4">
       <h2 className="text-xl font-bold mb-4">Prompt Editor</h2>
+      <ProjectSelector />
       <h3>Model:</h3>
       <Select>
         <SelectTrigger className="w-[180px]">
