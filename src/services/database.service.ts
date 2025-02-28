@@ -1,6 +1,6 @@
 // src/services/database.service.ts
 import { supabase } from '@/lib/supabase';
-import { User, Project } from '../types/supabase';
+import { User, Project, Model } from '../types/supabase';
 
 export const DatabaseService = {
   // User methods
@@ -67,5 +67,27 @@ export const DatabaseService = {
       .delete()
       .eq('id', id);
     if (error) throw error;
-  }
+  },
+
+  // Model methods
+  createModel: async (model: Omit<Model, 'id' | 'created_at' | 'updated_at'>): Promise<Model> => {
+    const { data, error } = await supabase
+      .from('models')
+      .insert(model)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  },
+
+  getModelsByUser: async (userId: string): Promise<Model[]> => {
+    const { data, error } = await supabase
+      .from('models')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  },
 };

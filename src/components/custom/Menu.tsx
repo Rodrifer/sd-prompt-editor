@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { 
-  FolderIcon, 
   LayersIcon, 
   TagIcon, 
   LayoutGridIcon
 } from 'lucide-react';
 import { ProjectDialog } from './ProjectDialog';
+import { ModelDialog } from './ModelDialog';
 
 const Menu: React.FC = () => {
   return (
@@ -14,6 +14,7 @@ const Menu: React.FC = () => {
       <div className="container mx-auto flex justify-between items-center p-4">
         <div className="flex space-x-4">
           <ProjectDialog />
+          <ModelDialog />
           <Button variant="ghost" size="sm">
             <LayersIcon className="mr-2 h-4 w-4" /> Models
           </Button>

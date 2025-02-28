@@ -1,5 +1,5 @@
 // src/components/custom/ProjectSelector.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Select, 
   SelectContent, 

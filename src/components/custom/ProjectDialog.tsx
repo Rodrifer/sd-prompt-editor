@@ -1,5 +1,5 @@
 // src/components/custom/ProjectDialog.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
   Dialog, 
   DialogContent, 
@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DatabaseService } from '@/services/database.service';
 import { Project } from '@/types/supabase';
+import { toast } from "sonner";
 
 interface ProjectDialogProps {
   onProjectCreated?: (project: Project) => void;
@@ -25,14 +26,17 @@ export function ProjectDialog({ onProjectCreated }: ProjectDialogProps) {
 
   const handleCreateProject = async () => {
     try {
-      // Note: You'll need to replace 'user_id' with actual authenticated user's ID
       const newProject = await DatabaseService.createProject({
-        user_id: import.meta.env.VITE_SUPABASE_DEFAULT_USER_ID, // Replace with actual user ID
+        user_id: import.meta.env.VITE_SUPABASE_DEFAULT_USER_ID,
         name: projectName,
         description: projectDescription,
         creation_date: new Date().toISOString(),
         update_date: new Date().toISOString(),
         is_public: false
+      });
+
+      toast.success("Project Created", {
+        description: `Project "${newProject.name}" has been created successfully.`
       });
 
       // Reset form
@@ -44,7 +48,9 @@ export function ProjectDialog({ onProjectCreated }: ProjectDialogProps) {
       onProjectCreated?.(newProject);
     } catch (error) {
       console.error('Failed to create project', error);
-      // Optionally, add error handling UI
+      toast.error("Error", {
+        description: "Failed to create project. Please try again."
+      });
     }
   };
 

@@ -89,6 +89,39 @@ export type Database = {
           }
         ]
       }
+      models: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          version: string
+          url: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          version: string
+          url?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          version?: string
+          url?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       // Add other tables similarly...
     }
     Views: {
@@ -103,3 +136,4 @@ export type Database = {
 // Add type exports for easier use
 export type Project = Database['public']['Tables']['projects']['Row'];
 export type User = Database['public']['Tables']['users']['Row'];
+export type Model = Database['public']['Tables']['models']['Row'];
