@@ -9,28 +9,33 @@ import {
 } from "@/components/ui/select";
 import { DatabaseService } from '@/services/database.service';
 import { Project } from '@/types/supabase';
-//import { useAuth } from '@/hooks/useAuth';
-
+import { toast } from "sonner";
+import { usePrompt } from '@/context/PromptContext';
 
 export function ProjectSelector() {
-  //const { user } = vite
   const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const { project, setProject } = usePrompt();
+  const defaultUserId = import.meta.env.VITE_SUPABASE_DEFAULT_USER_ID;
 
   useEffect(() => {
     const fetchProjects = async () => {
-       //(!user) return;
-
       try {
-        const userProjects = await DatabaseService.getProjectsByUser(import.meta.env.VITE_SUPABASE_DEFAULT_USER_ID);
+        const userProjects = await DatabaseService.getProjectsByUser(defaultUserId);
+        
         setProjects(userProjects);
         
         // Auto-select the first project if available
-        if (userProjects.length > 0) {
-          setSelectedProject(userProjects[0].id);
+        if (userProjects.length > 0 && !project) {
+          const firstProjectId = userProjects[0].id;
+          if (firstProjectId) {
+            setProject(firstProjectId);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch projects', error);
+        toast.error("Error", {
+          description: "Failed to fetch projects"
+        });
       }
     };
 
@@ -38,29 +43,22 @@ export function ProjectSelector() {
   }, []);
 
   const handleProjectChange = (projectId: string) => {
-    setSelectedProject(projectId);
-    // You can add additional logic here, like updating global state or context
+    setProject(projectId);
   };
-
-  // If no user, return null or a sign-in prompt
-  /*if (!user) {
-    return null;
-  }*/
 
   return (
     <div className="w-full space-y-2">
       <div className="flex items-center space-x-2">
         <Select 
-          value={selectedProject || undefined}
-          onValueChange={handleProjectChange}
-        >
-          <SelectTrigger className="w-full">
+          value={project || ""}
+          onValueChange={handleProjectChange}>
+          <SelectTrigger>
             <SelectValue placeholder="Select a project" />
           </SelectTrigger>
           <SelectContent>
-            {projects.map((project) => (
-              <SelectItem key={project.id} value={project.id}>
-                {project.name}
+            {projects.map((projectItem) => (
+              <SelectItem key={projectItem.id} value={projectItem.id || ""}>
+                {projectItem.name}
               </SelectItem>
             ))}
           </SelectContent>

@@ -7,6 +7,10 @@ interface PromptContextType {
   setNegativePrompt: (negativePrompt: string) => void;
   image: string | null;
   setImage: (image: string | null) => void;
+  model: string;
+  setModel: (model: string) => void;
+  project: string;
+  setProject: (project: string) => void;
 }
 
 export const PromptContext = createContext<PromptContextType | undefined>(undefined);
@@ -17,6 +21,8 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
   const [prompt, setPrompt] = useState<string>("");
   const [negativePrompt, setNegativePrompt] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
+  const [model, setModel] = useState<string>("");
+  const [project, setProject] = useState<string>("");
 
   return (
     <PromptContext.Provider
@@ -27,6 +33,10 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
         setNegativePrompt,
         image,
         setImage,
+        model,
+        setModel,
+        project,
+        setProject,
       }}
     >
       {children}

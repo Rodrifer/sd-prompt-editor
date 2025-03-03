@@ -16,9 +16,6 @@ const Menu: React.FC = () => {
           <ProjectDialog />
           <ModelDialog />
           <Button variant="ghost" size="sm">
-            <LayersIcon className="mr-2 h-4 w-4" /> Models
-          </Button>
-          <Button variant="ghost" size="sm">
             <TagIcon className="mr-2 h-4 w-4" /> Tags
           </Button>
           <Button variant="ghost" size="sm">

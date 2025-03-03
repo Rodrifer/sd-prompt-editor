@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/select";
 import { DatabaseService } from '@/services/database.service';
 import { Model } from '@/types/supabase';
-import { ModelDialog } from './ModelDialog';
 import { toast } from "sonner";
+import { usePrompt } from '@/context/PromptContext';
 
 export function ModelSelector() {
   const [models, setModels] = useState<Model[]>([]);
-  const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const { model, setModel } = usePrompt();
   const defaultUserId = import.meta.env.VITE_SUPABASE_DEFAULT_USER_ID;
 
   useEffect(() => {
@@ -25,8 +25,11 @@ export function ModelSelector() {
         setModels(userModels);
         
         // Auto-select the first model if available
-        if (userModels.length > 0) {
-          setSelectedModel(userModels[0].id);
+        if (userModels.length > 0 && !model) {
+          const firstModelUrl = userModels[0].url;
+          if (firstModelUrl) {
+            setModel(firstModelUrl);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch models', error);
@@ -39,25 +42,24 @@ export function ModelSelector() {
     fetchModels();
   }, []);
 
-  const handleModelChange = (modelId: string) => {
-    setSelectedModel(modelId);
-    // You can add additional logic here, like updating global state
+  const handleModelChange = (modelUrl: string) => {
+    setModel(modelUrl);
+    console.log(modelUrl);
   };
 
   return (
     <div className="w-full space-y-2">
       <div className="flex items-center space-x-2">
         <Select 
-          value={selectedModel || undefined}
-          onValueChange={handleModelChange}
-        >
-          <SelectTrigger className="w-full">
+          value={model || ""}
+          onValueChange={handleModelChange}>
+          <SelectTrigger>
             <SelectValue placeholder="Select a model" />
           </SelectTrigger>
           <SelectContent>
-            {models.map((model) => (
-              <SelectItem key={model.id} value={model.id}>
-                {model.name}
+            {models.map((modelItem) => (
+              <SelectItem key={modelItem.id} value={modelItem.url || ""}>
+                {modelItem.name}
               </SelectItem>
             ))}
           </SelectContent>
