@@ -7,6 +7,7 @@ import { PromptContext } from "../../context/PromptContext";
 import { uploadImageToCloudinary } from "../../services/cloudinary.service";
 import { ModelSelector } from "./ModelSelector";
 
+
 const sidebarService = StableDiffusionService.getInstance();
 
 const Sidebar: React.FC = () => {
@@ -17,6 +18,10 @@ const Sidebar: React.FC = () => {
     setNegativePrompt,
     image,
     setImage,
+    model,
+    setModel,
+    project,
+    setProject,
   } = useContext(PromptContext) || {
     prompt: "",
     setPrompt: () => {},
@@ -24,6 +29,10 @@ const Sidebar: React.FC = () => {
     setNegativePrompt: () => {},
     image: null,
     setImage: () => {},
+    model: "",
+    setModel: () => {},
+    project: "",
+    setProject: () => {},
   };
 
   const handleRunClick = async () => {
@@ -42,7 +51,7 @@ const Sidebar: React.FC = () => {
           },
         ],
       };
-      const result = await sidebarService.generateImage(params);
+      const result = await sidebarService.generateImage(params, model, project);
 
       if (!result) {
         console.error("No se pudo generar la imagen.");
@@ -68,9 +77,9 @@ const Sidebar: React.FC = () => {
       <h3>Model:</h3>
       <ModelSelector />
       <h3>Prompt:</h3>
-      <Textarea className="w-full" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+      <Textarea className="w-full mb-4 h-32" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
       <h3>Negative Prompt:</h3>
-      <Textarea className="w-full" value={negativePrompt} onChange={(e) => setNegativePrompt(e.target.value)} />
+      <Textarea className="w-full mb-4 h-32" value={negativePrompt} onChange={(e) => setNegativePrompt(e.target.value)} />
       <Button className="mt-4" onClick={handleRunClick}>
         Run
       </Button>

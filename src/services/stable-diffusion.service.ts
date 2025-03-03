@@ -42,7 +42,9 @@ export class StableDiffusionService {
   }
 
   async generateImage(
-    params: StableDiffusionParams
+    params: StableDiffusionParams,
+    model: string,
+    project: string
   ): Promise<StableDiffusionResponse | null> {
     if (!this.apiKey) {
       console.error("API Key is required");
@@ -56,7 +58,7 @@ export class StableDiffusionService {
 
     try {
       const response = await axios.post(
-        `${STABLE_DIFFUSION_CONFIG.BASE_URL}${STABLE_DIFFUSION_CONFIG.ENDPOINTS.SDXL_10}`,
+        model,
         requestParams,
         {
           headers: {
