@@ -32,6 +32,7 @@ CREATE TABLE projects (
 -- Create MODEL table
 CREATE TABLE models (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    config_id UUID NOT NULL REFERENCES configs(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     description TEXT,
     version TEXT NOT NULL,
@@ -44,9 +45,22 @@ CREATE TABLE models (
 -- Create CONFIG table
 CREATE TABLE configs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    name TEXT NOT NULL,
-    parameters JSONB NOT NULL DEFAULT '{}',
+    width INTEGER,
+    height INTEGER,
+    cfg_scale INTEGER,
+    clip_guidance_preset TEXT,
+    sampler TEXT,
+    samples INTEGER,
+    seed INTEGER,
+    steps INTEGER,
+    style_preset TEXT,
+    extras TEXT,
+    aspect_ratio TEXT,
+    mode TEXT,
+    image TEXT,
+    strength REAL,
+    model TEXT,
+    output_format TEXT,
     is_default BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -69,7 +83,8 @@ CREATE TABLE prompts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
-    content TEXT NOT NULL,
+    prompt TEXT NOT NULL,
+    negative_prompt TEXT, 
     creation_date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     update_date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     is_favorite BOOLEAN NOT NULL DEFAULT FALSE,
@@ -255,3 +270,14 @@ CREATE TRIGGER update_blocks_updated_at BEFORE UPDATE ON blocks
 
 CREATE TRIGGER update_collections_updated_at BEFORE UPDATE ON collections
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Populate users table with default values
+INSERT INTO "public"."users" ("id", "username", "email", "password_hash", "registration_date", "last_login", "is_premium", "created_at", "updated_at") VALUES ('bb51fcb4-1390-45c9-8452-4fe2255f060d', 'Default', 'default@default.test', 'asdasgafgerwtwertybsbsdbsd', '2025-02-28', null, 'false', '2025-02-28 03:12:37.642803+00', '2025-02-28 03:12:37.642803+00');
+
+-- Populate models table with default values
+INSERT INTO "public"."models" ("id", "name", "description", "version", "url", "is_active", "created_at", "updated_at", "config_id") 
+VALUES ('1b1769b7-c8a1-4f67-a7ee-422dd05ac430', 'SDXL 1.0', 'SDXL 1.0', '', 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image', 'true', '2025-02-28 21:15:30.494538+00', '2025-02-28 21:15:30.494538+00', null),
+ ('26ba7d80-78dd-47da-886c-193f0d6c0f17', 'Stable Image Core', 'Stable Image Core', '', 'https://api.stability.ai/v2beta/stable-image/generate/core', 'true', '2025-02-28 21:24:49.009585+00', '2025-02-28 21:24:49.009585+00', null),
+ ('8cee7dd5-a3f1-4876-bf56-2838fb159845', 'Stable Image Ultra', 'Stable Image Ultra', '', 'https://api.stability.ai/v2beta/stable-image/generate/ultra', 'true', '2025-02-28 21:25:23.601874+00', '2025-02-28 21:25:23.601874+00', null),
+ ('bbd7a2c7-0a55-4580-966f-4c2bc00c4047', 'SD 1.6', 'SD 1.6', '', 'https://api.stability.ai/v1/generation/stable-diffusion-v1-6/text-to-image', 'true', '2025-02-28 21:17:55.434585+00', '2025-02-28 21:17:55.434585+00', null),
+ ('fd4308b8-6976-437e-ab46-9b19a3676de5', 'SD 3.0 & 3.5', 'SD 3.0 & 3.5', '', 'https://api.stability.ai/v2beta/stable-image/generate/sd3', 'true', '2025-02-28 21:22:12.677936+00', '2025-02-28 21:22:12.677936+00', null);
