@@ -37,6 +37,7 @@ CREATE TABLE models (
     description TEXT,
     version TEXT NOT NULL,
     url TEXT,
+    slug TEXT NOT NULL UNIQUE,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

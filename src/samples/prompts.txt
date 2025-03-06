@@ -1,0 +1,8 @@
+promt: "Black and white coloring book, simple rough 1960 cartoon, black-and-white pen and ink line art, 
+hand draw outline doodle of a smiling pirate parrot perched on a palm tree on a desert island"
+
+negative: "highly detailed, realism, photograph, painting, gray, grayscale, colorful, pencil drawing, 
+cross-hatching, scribbles, silhouette, low-contrast, shading"
+
+
+
