@@ -2,7 +2,7 @@ import { ModelGenerationStrategy } from "@/types/model-config";
 import { SDXLGenerationStrategy } from "./model-strategies/sdxl-strategy";
 //import { StableImageCoreStrategy } from "./model-strategies/stable-image-core-strategy";
 //import { StableImageUltraStrategy } from "./model-strategies/stable-image-ultra-strategy";
-//import { StableDiffusionV16Strategy } from "./model-strategies/stable-diffusion-v16-strategy";
+import { StableDiffusionV16Strategy } from "./model-strategies/stable-diffusion-v16-strategy";
 //import { StableDiffusionSD3Strategy } from "./model-strategies/stable-diffusion-sd3-strategy";
 
 export class ModelStrategyFactory {
@@ -10,7 +10,7 @@ export class ModelStrategyFactory {
     'sdxl-10': new SDXLGenerationStrategy(),                       // SDXL 1.0
     //'stable-image-core': new StableImageCoreStrategy(),          // Stable Image Core
     //'stable-image-ultra ': new StableImageUltraStrategy(),       // Stable Image Ultra
-    //'sd-16': new StableDiffusionV16Strategy(),                   // SD 1.6
+    'sd-16': new StableDiffusionV16Strategy(),                   // SD 1.6
     //'sd-30-35': new StableDiffusionSD3Strategy()                 // SD 3.0 & 3.5
   };
 
