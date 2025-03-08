@@ -41,8 +41,8 @@ const Sidebar: React.FC = () => {
       const params = {
         prompt: prompt,
         negative_prompt: negativePrompt,
-        width: 1024,
-        height: 1024,
+        width: 896,
+        height: 1152,
       };
 
       const result = await StableDiffusionService.generateImage(

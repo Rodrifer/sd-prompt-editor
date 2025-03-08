@@ -5,7 +5,7 @@ import {
   GenerationParams 
 } from '@/types/model-config';
 
-export class SDXLGenerationStrategy implements ModelGenerationStrategy {
+export class StableDiffusionXLStrategy implements ModelGenerationStrategy {
   // Prepare SDXL-specific parameters before API call
   prepareParams(
     baseParams: GenerationParams, 

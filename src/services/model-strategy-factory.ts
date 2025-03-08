@@ -1,5 +1,5 @@
 import { ModelGenerationStrategy } from "@/types/model-config";
-import { SDXLGenerationStrategy } from "./model-strategies/sdxl-strategy";
+import { StableDiffusionXLStrategy } from "./model-strategies/stable-diffusion-xl-strategy";
 //import { StableImageCoreStrategy } from "./model-strategies/stable-image-core-strategy";
 //import { StableImageUltraStrategy } from "./model-strategies/stable-image-ultra-strategy";
 import { StableDiffusionV16Strategy } from "./model-strategies/stable-diffusion-v16-strategy";
@@ -7,7 +7,7 @@ import { StableDiffusionV16Strategy } from "./model-strategies/stable-diffusion-
 
 export class ModelStrategyFactory {
   private static strategies: { [key: string]: ModelGenerationStrategy } = {
-    'sdxl-10': new SDXLGenerationStrategy(),                       // SDXL 1.0
+    'sdxl-10': new StableDiffusionXLStrategy(),                       // SDXL 1.0
     //'stable-image-core': new StableImageCoreStrategy(),          // Stable Image Core
     //'stable-image-ultra ': new StableImageUltraStrategy(),       // Stable Image Ultra
     'sd-16': new StableDiffusionV16Strategy(),                   // SD 1.6
