@@ -40,7 +40,7 @@ const Sidebar: React.FC = () => {
     try {
       const params = {
         prompt: prompt,
-        negative_prompt: negativePrompt,
+        negativePrompt: negativePrompt,
         width: 896,
         height: 1152,
       };
@@ -55,7 +55,13 @@ const Sidebar: React.FC = () => {
         return;
       }
 
-      const base64Image = result.artifacts[0].base64;
+      let base64Image = "";
+      if (!result.artifacts || result.artifacts.length === 0) {
+        base64Image = result.image;
+      } else {
+        base64Image = result.artifacts[0].base64;
+      }
+      
 
       const uploadResponse = await uploadImageToCloudinary(
         `data:image/png;base64,${base64Image}`
