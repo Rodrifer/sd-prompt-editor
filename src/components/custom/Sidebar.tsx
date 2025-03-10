@@ -77,7 +77,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-96 bg-white border-r p-4">
+    <aside className="flex-shrink-0 w-64 bg-white border-r p-4">
       <h2 className="text-xl font-bold mb-4">Prompt Editor</h2>
       <h3>Project:</h3>
       <ProjectSelector />
