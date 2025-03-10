@@ -15,7 +15,9 @@ interface PromptContextType {
   setProject: (project: string) => void;
 }
 
-export const PromptContext = createContext<PromptContextType | undefined>(undefined);
+export const PromptContext = createContext<PromptContextType | undefined>(
+  undefined
+);
 
 export const PromptProvider: React.FC<{ children: ReactNode }> = ({
   children,

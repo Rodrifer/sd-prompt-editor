@@ -1,12 +1,8 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { 
-  LayersIcon, 
-  TagIcon, 
-  LayoutGridIcon
-} from 'lucide-react';
-import { ProjectDialog } from './ProjectDialog';
-import { ModelDialog } from './ModelDialog';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { LayersIcon, TagIcon, LayoutGridIcon } from "lucide-react";
+import { ProjectDialog } from "./ProjectDialog";
+import { ModelDialog } from "./ModelDialog";
 
 const Menu: React.FC = () => {
   return (

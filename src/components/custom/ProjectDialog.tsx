@@ -1,18 +1,18 @@
 // src/components/custom/ProjectDialog.tsx
-import { useState } from 'react';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { DatabaseService } from '@/services/database.service';
-import { Project } from '@/types/supabase';
+import { DatabaseService } from "@/services/database.service";
+import { Project } from "@/types/supabase";
 import { toast } from "sonner";
 
 interface ProjectDialogProps {
@@ -20,8 +20,8 @@ interface ProjectDialogProps {
 }
 
 export function ProjectDialog({ onProjectCreated }: ProjectDialogProps) {
-  const [projectName, setProjectName] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCreateProject = async () => {
@@ -32,24 +32,24 @@ export function ProjectDialog({ onProjectCreated }: ProjectDialogProps) {
         description: projectDescription,
         creation_date: new Date().toISOString(),
         update_date: new Date().toISOString(),
-        is_public: false
+        is_public: false,
       });
 
       toast.success("Project Created", {
-        description: `Project "${newProject.name}" has been created successfully.`
+        description: `Project "${newProject.name}" has been created successfully.`,
       });
 
       // Reset form
-      setProjectName('');
-      setProjectDescription('');
+      setProjectName("");
+      setProjectDescription("");
       setIsOpen(false);
 
       // Callback to parent component
       onProjectCreated?.(newProject);
     } catch (error) {
-      console.error('Failed to create project', error);
+      console.error("Failed to create project", error);
       toast.error("Error", {
-        description: "Failed to create project. Please try again."
+        description: "Failed to create project. Please try again.",
       });
     }
   };
@@ -71,27 +71,27 @@ export function ProjectDialog({ onProjectCreated }: ProjectDialogProps) {
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input 
-              id="name" 
+            <Input
+              id="name"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
-              className="col-span-3" 
+              className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="description" className="text-right">
               Description
             </Label>
-            <Input 
-              id="description" 
+            <Input
+              id="description"
               value={projectDescription}
               onChange={(e) => setProjectDescription(e.target.value)}
-              className="col-span-3" 
+              className="col-span-3"
             />
           </div>
         </div>
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           onClick={handleCreateProject}
           disabled={!projectName}
         >

@@ -57,11 +57,10 @@ const Sidebar: React.FC = () => {
 
       let base64Image = "";
       if (!result.artifacts || result.artifacts.length === 0) {
-        base64Image = result.image;
+        base64Image = result.image; // For SD3 and Core/Ultra
       } else {
-        base64Image = result.artifacts[0].base64;
+        base64Image = result.artifacts[0].base64; // For SDXL and V16
       }
-      
 
       const uploadResponse = await uploadImageToCloudinary(
         `data:image/png;base64,${base64Image}`

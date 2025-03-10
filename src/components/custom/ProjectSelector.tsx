@@ -1,16 +1,16 @@
 // src/components/custom/ProjectSelector.tsx
-import { useState, useEffect } from 'react';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import { useState, useEffect } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
-import { DatabaseService } from '@/services/database.service';
-import { Project } from '@/types/supabase';
+import { DatabaseService } from "@/services/database.service";
+import { Project } from "@/types/supabase";
 import { toast } from "sonner";
-import { usePrompt } from '@/context/PromptContext';
+import { usePrompt } from "@/context/PromptContext";
 
 export function ProjectSelector() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -20,10 +20,12 @@ export function ProjectSelector() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const userProjects = await DatabaseService.getProjectsByUser(defaultUserId);
-        
+        const userProjects = await DatabaseService.getProjectsByUser(
+          defaultUserId
+        );
+
         setProjects(userProjects);
-        
+
         // Auto-select the first project if available
         if (userProjects.length > 0 && !project) {
           const firstProjectId = userProjects[0].id;
@@ -32,9 +34,9 @@ export function ProjectSelector() {
           }
         }
       } catch (error) {
-        console.error('Failed to fetch projects', error);
+        console.error("Failed to fetch projects", error);
         toast.error("Error", {
-          description: "Failed to fetch projects"
+          description: "Failed to fetch projects",
         });
       }
     };
@@ -49,9 +51,7 @@ export function ProjectSelector() {
   return (
     <div className="w-full space-y-2">
       <div className="flex items-center space-x-2">
-        <Select 
-          value={project || ""}
-          onValueChange={handleProjectChange}>
+        <Select value={project || ""} onValueChange={handleProjectChange}>
           <SelectTrigger>
             <SelectValue placeholder="Select a project" />
           </SelectTrigger>

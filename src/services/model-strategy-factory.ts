@@ -7,11 +7,11 @@ import { StableDiffusionSD3Strategy } from "./model-strategies/stable-diffusion-
 
 export class ModelStrategyFactory {
   private static strategies: { [key: string]: ModelGenerationStrategy } = {
-    'sdxl-10': new StableDiffusionXLStrategy(),                  // SDXL 1.0
-    'stable-image-core': new StableImageCoreStrategy(),          // Stable Image Core
-    'stable-image-ultra': new StableImageUltraStrategy(),       // Stable Image Ultra
-    'sd-16': new StableDiffusionV16Strategy(),                   // SD 1.6
-    'sd-30-35': new StableDiffusionSD3Strategy()                 // SD 3.0 & 3.5
+    "sdxl-10": new StableDiffusionXLStrategy(), // SDXL 1.0
+    "stable-image-core": new StableImageCoreStrategy(), // Stable Image Core
+    "stable-image-ultra": new StableImageUltraStrategy(), // Stable Image Ultra
+    "sd-16": new StableDiffusionV16Strategy(), // SD 1.6
+    "sd-30-35": new StableDiffusionSD3Strategy(), // SD 3.0 & 3.5
   };
 
   // Method to retrieve the appropriate strategy for a given model slug

@@ -6,3 +6,12 @@ cross-hatching, scribbles, silhouette, low-contrast, shading"
 
 
 
+prompt: "A colorful and creative school cover page with a blank space for the student's name and 
+        subject. The design includes playful elements like pencils, books, rulers, and a cheerful 
+        background with soft gradients. The style is vibrant, kid-friendly, and cartoonish, with 
+        a touch of modern digital illustration. The title area has a decorative frame, and the 
+        overall layout is organized and visually appealing."
+
+negative: "text, letters, words, watermark, signature, captions, typography, logo, symbols, text 
+        artifacts, bad anatomy, deformed, distorted, blurry, low quality, dark, dull, 
+        messy composition, nsfw, violence, horror"
