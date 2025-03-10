@@ -51,7 +51,7 @@ const Sidebar: React.FC = () => {
       );
 
       if (!result) {
-        console.error("No se pudo generar la imagen.");
+        console.error("The image could not be generated.");
         return;
       }
 
@@ -62,12 +62,17 @@ const Sidebar: React.FC = () => {
         base64Image = result.artifacts[0].base64; // For SDXL and V16
       }
 
+      if (!base64Image) {
+        console.error("The image could not be generated.");
+        return;
+      }
+
       const uploadResponse = await uploadImageToCloudinary(
         `data:image/png;base64,${base64Image}`
       );
       setImage(uploadResponse.url);
     } catch (error) {
-      console.error("Error al llamar a la API:", error);
+      console.error("Error calling the API:", error);
     }
   };
 

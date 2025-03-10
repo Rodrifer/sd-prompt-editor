@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { LayersIcon, TagIcon, LayoutGridIcon } from "lucide-react";
+import { TagIcon, LayoutGridIcon } from "lucide-react";
 import { ProjectDialog } from "./ProjectDialog";
 import { ModelDialog } from "./ModelDialog";
 
