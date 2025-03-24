@@ -1,4 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
+import { DatabaseService } from "@/services/database.service";
+import { Prompt, Image } from "@/types/supabase";
 
 interface PromptContextType {
   prompt: string;
@@ -13,6 +15,15 @@ interface PromptContextType {
   setModelSlug: (modelSlug: string) => void;
   project: string;
   setProject: (project: string) => void;
+  projectImagesAndPrompts: Array<{
+    prompt: Prompt;
+    images: Image[];
+  }>;
+  setProjectImagesAndPrompts: (data: Array<{
+    prompt: Prompt;
+    images: Image[];
+  }>) => void;
+  refreshProjectData: () => Promise<void>;
 }
 
 export const PromptContext = createContext<PromptContextType | undefined>(
@@ -28,6 +39,21 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
   const [model, setModel] = useState<string>("");
   const [modelSlug, setModelSlug] = useState<string>("");
   const [project, setProject] = useState<string>("");
+  const [projectImagesAndPrompts, setProjectImagesAndPrompts] = useState<Array<{
+    prompt: Prompt;
+    images: Image[];
+  }>>([]);
+
+  const refreshProjectData = async () => {
+    if (!project) return;
+
+    try {
+      const imagesAndPrompts = await DatabaseService.getProjectImagesAndPrompts(project);
+      setProjectImagesAndPrompts(imagesAndPrompts);
+    } catch (error) {
+      console.error("Error refreshing project data:", error);
+    }
+  };
 
   return (
     <PromptContext.Provider
@@ -44,6 +70,9 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
         setModelSlug,
         project,
         setProject,
+        projectImagesAndPrompts,
+        setProjectImagesAndPrompts,
+        refreshProjectData,
       }}
     >
       {children}

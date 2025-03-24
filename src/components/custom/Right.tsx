@@ -1,30 +1,8 @@
-import { Bell, Calendar, Star, MessageCircle, ImageIcon } from "lucide-react"
-import { useState, useEffect } from "react"
+import { ImageIcon } from "lucide-react"
 import { usePrompt } from "@/context/PromptContext"
-import { Prompt, Image } from "@/types/supabase"
-import { DatabaseService } from "@/services/database.service"
 
 export default function Right() {
-  const { project } = usePrompt()
-  const [projectImagesAndPrompts, setProjectImagesAndPrompts] = useState<Array<{
-    prompt: Prompt;
-    images: Image[];
-  }>>([])
-
-  useEffect(() => {
-    const fetchProjectImagesAndPrompts = async () => {
-      if (!project) return
-
-      try {
-        const imagesAndPrompts = await DatabaseService.getProjectImagesAndPrompts(project)
-        setProjectImagesAndPrompts(imagesAndPrompts)
-      } catch (error) {
-        console.error("Error fetching project images and prompts:", error)
-      }
-    }
-
-    fetchProjectImagesAndPrompts()
-  }, [project])
+  const { projectImagesAndPrompts } = usePrompt()
 
   return (
     <aside className="w-full md:w-1/5 bg-muted p-4 border-l">
@@ -37,7 +15,7 @@ export default function Right() {
           </div>
         ) : (
           <div className="space-y-4">
-            {projectImagesAndPrompts.map(({ prompt, images }, index) => (
+            {projectImagesAndPrompts.map(({ prompt, images }) => (
               <div 
                 key={prompt.id} 
                 className="bg-background p-3 rounded-md shadow-sm hover:bg-accent transition-colors"

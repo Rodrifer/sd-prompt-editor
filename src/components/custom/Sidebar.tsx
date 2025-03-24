@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { ProjectSelector } from "./ProjectSelector";
@@ -23,6 +23,7 @@ const Sidebar: React.FC = () => {
     setModelSlug,
     project,
     setProject,
+    refreshProjectData // Add this from context
   } = useContext(PromptContext) || {
     prompt: "",
     setPrompt: () => {},
@@ -36,6 +37,7 @@ const Sidebar: React.FC = () => {
     setModelSlug: () => {},
     project: "",
     setProject: () => {},
+    refreshProjectData: () => {}
   };
 
   const handleRunClick = async () => {
@@ -74,7 +76,7 @@ const Sidebar: React.FC = () => {
       );
       setImage(uploadResponse.url);
 
-      // Same image and prompt to database
+      // Save image and prompt to database
       const { status } = await DatabaseService.saveGeneratedImage(
         uploadResponse.url,
         prompt,
@@ -91,10 +93,13 @@ const Sidebar: React.FC = () => {
         return;
       }
 
-      // TODO: Add notification
+      // Refresh project data to update Right sidebar
+      await refreshProjectData();
+
       toast.success("Image generated and saved to database.");
     } catch (error) {
       console.error("Error calling the API:", error);
+      toast.error("Failed to generate or save image");
     }
   };
 

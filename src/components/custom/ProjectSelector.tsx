@@ -1,5 +1,5 @@
 // src/components/custom/ProjectSelector.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Select,
   SelectContent,
@@ -8,18 +8,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DatabaseService } from "@/services/database.service";
-import { Project, Prompt, Image } from "@/types/supabase";
+//import { PromptContext } from "@/context/PromptContext";
+import { Project } from "@/types/supabase";
 import { toast } from "sonner";
 import { usePrompt } from "@/context/PromptContext";
 
 export function ProjectSelector() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const { project, setProject } = usePrompt();
+  const { project, setProject, refreshProjectData } = usePrompt();
   const defaultUserId = import.meta.env.VITE_SUPABASE_DEFAULT_USER_ID;
-  const [projectImagesAndPrompts, setProjectImagesAndPrompts] = useState<Array<{
+  /*const [projectImagesAndPrompts, setProjectImagesAndPrompts] = useState<Array<{
     prompt: Prompt;
     images: Image[];
-  }>>([]);
+  }>>([]);*/
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -27,16 +28,16 @@ export function ProjectSelector() {
         const userProjects = await DatabaseService.getProjectsByUser(
           defaultUserId
         );
-
+  
         setProjects(userProjects);
-
+  
         // Auto-select the first project if available
         if (userProjects.length > 0 && !project) {
           const firstProjectId = userProjects[0].id;
           if (firstProjectId) {
             setProject(firstProjectId);
             // Fetch images and prompts for the first project
-            await fetchProjectImagesAndPrompts(firstProjectId);
+            await refreshProjectData();
           }
         }
       } catch (error) {
@@ -44,25 +45,26 @@ export function ProjectSelector() {
         toast.error("Failed to fetch projects");
       }
     };
-
+  
     fetchProjects();
   }, []);
 
-  const fetchProjectImagesAndPrompts = async (projectId: string) => {
+  /*const fetchProjectImagesAndPrompts = async (projectId: string) => {
     try {
       const imagesAndPrompts = await DatabaseService.getProjectImagesAndPrompts(projectId);
-      setProjectImagesAndPrompts(imagesAndPrompts);
-      console.log(imagesAndPrompts);
+      //setProjectImagesAndPrompts(imagesAndPrompts);
+      refreshProjectData();
       toast.success(`Loaded ${imagesAndPrompts.length} prompts for the project`);
     } catch (error) {
       console.error("Error fetching project images and prompts:", error);
       toast.error("Failed to fetch project images and prompts");
     }
-  };
+  };*/
 
   const handleProjectChange = (selectedProjectId: string) => {
     setProject(selectedProjectId);
-    fetchProjectImagesAndPrompts(selectedProjectId);
+    //fetchProjectImagesAndPrompts(selectedProjectId);
+    refreshProjectData();
   };
 
   return (
