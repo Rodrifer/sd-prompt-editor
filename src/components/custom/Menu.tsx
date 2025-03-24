@@ -6,8 +6,8 @@ import { ModelDialog } from "./ModelDialog";
 
 const Menu: React.FC = () => {
   return (
-    <div className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
-      <div className="w-full flex justify-between items-center p-4">
+    <div className="container mx-auto flex bg-white shadow-md z-50">
+      <div className="justify-between items-center p-4">
         <div className="flex space-x-4">
           <ProjectDialog />
           <ModelDialog />

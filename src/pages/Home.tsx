@@ -6,8 +6,8 @@ const Home: React.FC = () => {
   const { image } = useContext(PromptContext) || { image: null };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-4">
-      <div className="w-full h-full max-w-4xl bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+    <div className="w-full md:w-3/5 items-center justify-center p-4">
+      <div className="bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
         {image && (
           <img 
             src={image} 

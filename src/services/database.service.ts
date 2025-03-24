@@ -1,6 +1,6 @@
 // src/services/database.service.ts
 import { supabase } from "@/lib/supabase";
-import { User, Project, Model, ModelConfig } from "../types/supabase";
+import { User, Project, Model, ModelConfig, Prompt, Image } from "../types/supabase";
 import { ModelApiConfig } from "@/types/model-config";
 
 export const DatabaseService = {
@@ -180,6 +180,55 @@ export const DatabaseService = {
       },
       apiKeyRequired: true,
       apiVersion: "v1",
+    };
+  },
+
+  // Save generated image with its prompt
+  saveGeneratedImage: async (
+    imageUrl: string,
+    prompt: string, 
+    projectId: string, 
+    modelId?: string,
+    configId?: string,
+    negativePrompt?: string,
+    size?: string,
+    metadata?: Record<string, any>
+  ): Promise<{ 
+    status: string;
+  }> => {
+    // First, create the prompt
+    const { data: promptData, error: promptError } = await supabase
+      .from("prompts")
+      .insert({
+        project_id: projectId,
+        name: prompt.slice(0, 50), // Use first 50 chars as name
+        prompt: prompt,
+        negative_prompt: negativePrompt,
+        is_favorite: false
+      } as Prompt)
+      .select()
+      .single();
+
+    if (promptError) throw promptError;
+
+    // Then, create the image
+    const { error: imageError } = await supabase
+      .from("images")
+      .insert({
+        prompt_id: promptData.id,
+        image_url: imageUrl,
+        //size: size,
+        //metadata: metadata || {},
+        //model_id: modelId,
+        //config_id: configId
+      } as Image)
+      .select()
+      .single();
+
+    if (imageError) throw imageError;
+
+    return {
+      status: "success"
     };
   },
 };

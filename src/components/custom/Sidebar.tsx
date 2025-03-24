@@ -6,6 +6,8 @@ import { PromptContext } from "../../context/PromptContext";
 import { uploadImageToCloudinary } from "../../services/cloudinary.service";
 import { ModelSelector } from "./ModelSelector";
 import { StableDiffusionService } from "../../services/stable-diffusion.service";
+import { DatabaseService } from "../../services/database.service";
+import { toast } from "sonner";
 
 const Sidebar: React.FC = () => {
   const {
@@ -71,13 +73,33 @@ const Sidebar: React.FC = () => {
         `data:image/png;base64,${base64Image}`
       );
       setImage(uploadResponse.url);
+
+      // Same image and prompt to database
+      const { status } = await DatabaseService.saveGeneratedImage(
+        uploadResponse.url,
+        prompt,
+        project,
+        model,
+        //configId,
+        negativePrompt,
+        //size,
+        //metadata
+      );
+
+      if (status !== "success") {
+        console.error("The image could not be saved to the database.");
+        return;
+      }
+
+      // TODO: Add notification
+      toast.success("Image generated and saved to database.");
     } catch (error) {
       console.error("Error calling the API:", error);
     }
   };
 
   return (
-    <aside className="flex-shrink-0 w-64 bg-white border-r p-4">
+    <aside className="w-full md:w-1/5 bg-muted bg-white border-r p-4">
       <h2 className="text-xl font-bold mb-4">Prompt Editor</h2>
       <h3>Project:</h3>
       <ProjectSelector />

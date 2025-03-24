@@ -2,22 +2,25 @@ import React from "react";
 import Sidebar from "./Sidebar";
 import Menu from "./Menu";
 import { Toaster } from "@/components/ui/sonner";
+import Home from "@/pages/Home";
+import Footer from "./Footer";
+import Right from "./Right";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = () => {
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex min-h-screen flex-col">
       <Menu />
-      <div className="mt-16 flex w-full">
+      <div className="flex flex-col flex-1 md:flex-row">
         <Sidebar />
-        <main className="flex-1 p-4 bg-gray-100 overflow-auto">
-          {children}
-        </main>
-        <Toaster />
+        <Home />
+        <Right />
       </div>
+      <Footer />
+      <Toaster />
     </div>
   );
 };

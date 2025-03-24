@@ -86,8 +86,6 @@ CREATE TABLE prompts (
     name TEXT NOT NULL,
     prompt TEXT NOT NULL,
     negative_prompt TEXT, 
-    creation_date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    update_date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     is_favorite BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
