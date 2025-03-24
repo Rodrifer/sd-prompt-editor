@@ -183,6 +183,43 @@ export const DatabaseService = {
     };
   },
 
+  // Get images and prompts for a specific project
+  getProjectImagesAndPrompts: async (
+    projectId: string
+  ): Promise<Array<{
+    prompt: Prompt;
+    images: Image[];
+  }>> => {
+    // First, fetch all prompts for the project
+    const { data: promptsData, error: promptsError } = await supabase
+      .from("prompts")
+      .select("*")
+      .eq("project_id", projectId)
+      .order("created_at", { ascending: false });
+
+    if (promptsError) throw promptsError;
+
+    // For each prompt, fetch its associated images
+    const projectData = await Promise.all(
+      (promptsData || []).map(async (prompt) => {
+        const { data: imagesData, error: imagesError } = await supabase
+          .from("images")
+          .select("*")
+          .eq("prompt_id", prompt.id)
+          .order("created_at", { ascending: false });
+
+        if (imagesError) throw imagesError;
+
+        return {
+          prompt,
+          images: imagesData || []
+        };
+      })
+    );
+
+    return projectData;
+  },
+
   // Save generated image with its prompt
   saveGeneratedImage: async (
     imageUrl: string,
