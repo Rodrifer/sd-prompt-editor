@@ -14,9 +14,19 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
+import PromptDialog from "./PromptDialog"
+
+interface Prompt {
+  id: string;
+  name: string;
+  images?: { id: string; image_url: string }[];
+  // Agrega otras propiedades de prompt si es necesario
+}
 
 export default function Right() {
   const { projectImagesAndPrompts, refreshProjectData } = usePrompt()
+  const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null)
 
   const handleDeletePrompt = async (promptId: string) => {
     try {
@@ -34,6 +44,14 @@ export default function Right() {
     }
   };
 
+  const handlePromptClick = (prompt: Prompt) => {
+    setSelectedPrompt(prompt)
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedPrompt(null)
+  };
+
   return (
     <aside className="w-full md:w-1/5 bg-muted p-4 border-l">
       <div className="font-medium text-lg mb-6">Prompts</div>
@@ -49,6 +67,7 @@ export default function Right() {
               <div 
                 key={prompt.id} 
                 className="bg-background p-3 rounded-md shadow-sm hover:bg-accent transition-colors group"
+                onClick={() => handlePromptClick({ ...prompt, images })}
               >
                 <div className="flex items-start gap-3">
                   <ImageIcon className="h-5 w-5 mt-1 text-primary" />
@@ -115,6 +134,8 @@ export default function Right() {
           </div>
         )}
       </div>
+
+      <PromptDialog prompt={selectedPrompt} onClose={handleCloseDialog} />
     </aside>
   )
 }
