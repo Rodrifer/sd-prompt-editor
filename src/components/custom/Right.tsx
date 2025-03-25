@@ -1,8 +1,38 @@
-import { ImageIcon } from "lucide-react"
+import { ImageIcon, Trash2 } from "lucide-react"
 import { usePrompt } from "@/context/PromptContext"
+import { DatabaseService } from "@/services/database.service"
+import { toast } from "sonner"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 
 export default function Right() {
-  const { projectImagesAndPrompts } = usePrompt()
+  const { projectImagesAndPrompts, refreshProjectData } = usePrompt()
+
+  const handleDeletePrompt = async (promptId: string) => {
+    try {
+      const result = await DatabaseService.deletePromptAndImages(promptId);
+      
+      if (result.status === 'success') {
+        toast.success('Prompt and images deleted successfully');
+        await refreshProjectData();
+      } else {
+        toast.error(result.error || 'Failed to delete prompt');
+      }
+    } catch (error) {
+      console.error('Error deleting prompt:', error);
+      toast.error('An unexpected error occurred');
+    }
+  };
 
   return (
     <aside className="w-full md:w-1/5 bg-muted p-4 border-l">
@@ -18,16 +48,47 @@ export default function Right() {
             {projectImagesAndPrompts.map(({ prompt, images }) => (
               <div 
                 key={prompt.id} 
-                className="bg-background p-3 rounded-md shadow-sm hover:bg-accent transition-colors"
+                className="bg-background p-3 rounded-md shadow-sm hover:bg-accent transition-colors group"
               >
                 <div className="flex items-start gap-3">
                   <ImageIcon className="h-5 w-5 mt-1 text-primary" />
                   <div className="flex-1">
                     <div className="flex justify-between items-center">
                       <h4 className="text-sm font-semibold">{prompt.name}</h4>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(prompt.created_at).toLocaleDateString()}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(prompt.created_at).toLocaleDateString()}
+                        </span>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="h-6 w-6 text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Prompt?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will permanently delete the prompt and all associated images. 
+                                This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={() => handleDeletePrompt(prompt.id)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                       {prompt.prompt}

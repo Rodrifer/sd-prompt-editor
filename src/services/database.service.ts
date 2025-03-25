@@ -268,4 +268,89 @@ export const DatabaseService = {
       status: "success"
     };
   },
+
+  // Delete a prompt and its associated images
+  deletePromptAndImages: async (
+    promptId: string
+  ): Promise<{ 
+    status: string; 
+    error?: string 
+  }> => {
+    try {
+      // First, fetch all images associated with the prompt
+      const { data: imagesData, error: imagesError } = await supabase
+        .from("images")
+        .select("*")
+        .eq("prompt_id", promptId);
+
+      if (imagesError) {
+        console.error("Error fetching images:", imagesError);
+        return { 
+          status: "error", 
+          error: "Failed to fetch associated images" 
+        };
+      }
+
+      // Delete associated images from Cloudinary if URLs exist
+      if (imagesData && imagesData.length > 0) {
+        const cloudinaryDeletionPromises = imagesData
+          .filter(image => image.image_url)
+          .map(async (image) => {
+            try {
+              // Extract public ID from Cloudinary URL
+              const publicId = image.image_url.split('/').pop()?.split('.')[0];
+              if (publicId) {
+                await fetch(`/api/cloudinary/delete`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ publicId })
+                });
+              }
+            } catch (cloudinaryError) {
+              console.error("Error deleting image from Cloudinary:", cloudinaryError);
+            }
+          });
+
+        await Promise.all(cloudinaryDeletionPromises);
+      }
+
+      // Delete images from the database
+      const { error: deleteImagesError } = await supabase
+        .from("images")
+        .delete()
+        .eq("prompt_id", promptId);
+
+      if (deleteImagesError) {
+        console.error("Error deleting images:", deleteImagesError);
+        return { 
+          status: "error", 
+          error: "Failed to delete associated images" 
+        };
+      }
+
+      // Delete the prompt
+      const { error: deletePromptError } = await supabase
+        .from("prompts")
+        .delete()
+        .eq("id", promptId);
+
+      if (deletePromptError) {
+        console.error("Error deleting prompt:", deletePromptError);
+        return { 
+          status: "error", 
+          error: "Failed to delete prompt" 
+        };
+      }
+
+      return { status: "success" };
+    } catch (error) {
+      console.error("Unexpected error in deletePromptAndImages:", error);
+      return { 
+        status: "error", 
+        error: "An unexpected error occurred" 
+      };
+    }
+  },
 };

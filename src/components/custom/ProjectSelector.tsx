@@ -1,5 +1,5 @@
 // src/components/custom/ProjectSelector.tsx
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DatabaseService } from "@/services/database.service";
-//import { PromptContext } from "@/context/PromptContext";
 import { Project } from "@/types/supabase";
 import { toast } from "sonner";
 import { usePrompt } from "@/context/PromptContext";
@@ -17,10 +16,6 @@ export function ProjectSelector() {
   const [projects, setProjects] = useState<Project[]>([]);
   const { project, setProject, refreshProjectData } = usePrompt();
   const defaultUserId = import.meta.env.VITE_SUPABASE_DEFAULT_USER_ID;
-  /*const [projectImagesAndPrompts, setProjectImagesAndPrompts] = useState<Array<{
-    prompt: Prompt;
-    images: Image[];
-  }>>([]);*/
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -49,21 +44,8 @@ export function ProjectSelector() {
     fetchProjects();
   }, []);
 
-  /*const fetchProjectImagesAndPrompts = async (projectId: string) => {
-    try {
-      const imagesAndPrompts = await DatabaseService.getProjectImagesAndPrompts(projectId);
-      //setProjectImagesAndPrompts(imagesAndPrompts);
-      refreshProjectData();
-      toast.success(`Loaded ${imagesAndPrompts.length} prompts for the project`);
-    } catch (error) {
-      console.error("Error fetching project images and prompts:", error);
-      toast.error("Failed to fetch project images and prompts");
-    }
-  };*/
-
   const handleProjectChange = (selectedProjectId: string) => {
     setProject(selectedProjectId);
-    //fetchProjectImagesAndPrompts(selectedProjectId);
     refreshProjectData();
   };
 
