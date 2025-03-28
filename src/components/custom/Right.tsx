@@ -27,6 +27,8 @@ interface Prompt {
 export default function Right() {
   const { projectImagesAndPrompts, refreshProjectData } = usePrompt()
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null)
+  const [isPromptDialogOpen, setIsPromptDialogOpen] = useState(false)
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false)
 
   const handleDeletePrompt = async (promptId: string) => {
     try {
@@ -45,10 +47,18 @@ export default function Right() {
   };
 
   const handlePromptClick = (prompt: Prompt) => {
-    setSelectedPrompt(prompt)
+    setSelectedPrompt(prompt);
+    setIsPromptDialogOpen(true);
+  };
+
+  const handleDeleteClick = (prompt: Prompt) => {
+    setSelectedPrompt(prompt);
+    setIsAlertDialogOpen(true);
   };
 
   const handleCloseDialog = () => {
+    setIsPromptDialogOpen(false);
+    setIsAlertDialogOpen(false);
     setSelectedPrompt(null)
   };
 
@@ -67,23 +77,25 @@ export default function Right() {
               <div 
                 key={prompt.id} 
                 className="bg-background p-3 rounded-md shadow-sm hover:bg-accent transition-colors group"
-                onClick={() => handlePromptClick({ ...prompt, images })}
               >
                 <div className="flex items-start gap-3">
                   <ImageIcon className="h-5 w-5 mt-1 text-primary" />
                   <div className="flex-1">
                     <div className="flex justify-between items-center">
-                      <h4 className="text-sm font-semibold">{prompt.name}</h4>
+                      <h4 className="text-sm font-semibold cursor-pointer" onClick={() => handlePromptClick({ ...prompt, images })}>
+                        {prompt.name}
+                      </h4>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-muted-foreground">
                           {new Date(prompt.created_at).toLocaleDateString()}
                         </span>
-                        <AlertDialog>
+                        <AlertDialog open={isAlertDialogOpen && selectedPrompt?.id === prompt.id} onOpenChange={setIsAlertDialogOpen}>
                           <AlertDialogTrigger asChild>
                             <Button 
                               variant="ghost" 
                               size="icon" 
                               className="h-6 w-6 text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                              onClick={() => handleDeleteClick(prompt)}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -135,7 +147,7 @@ export default function Right() {
         )}
       </div>
 
-      <PromptDialog prompt={selectedPrompt} onClose={handleCloseDialog} />
+      <PromptDialog prompt={selectedPrompt} isOpen={isPromptDialogOpen} onClose={handleCloseDialog} />
     </aside>
   )
 }
