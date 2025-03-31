@@ -370,5 +370,13 @@ export const DatabaseService = {
     }
 
     return data;
+  },
+
+  getCollections: async (): Promise<Collection[]> => {
+    const { data, error } = await supabase
+      .from("collections")
+      .select("*");
+    if (error) throw error;
+    return data || [];
   }
 };

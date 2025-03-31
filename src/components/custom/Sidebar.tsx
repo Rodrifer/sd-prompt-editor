@@ -5,6 +5,7 @@ import { ProjectSelector } from "./ProjectSelector";
 import { PromptContext } from "../../context/PromptContext";
 import { uploadImageToCloudinary } from "../../services/cloudinary.service";
 import { ModelSelector } from "./ModelSelector";
+import { CollectionSelector } from "./CollectionSelector";
 import { StableDiffusionService } from "../../services/stable-diffusion.service";
 import { DatabaseService } from "../../services/database.service";
 import { toast } from "sonner";
@@ -110,6 +111,8 @@ const Sidebar: React.FC = () => {
       <ProjectSelector />
       <h3>Model:</h3>
       <ModelSelector />
+      <h3>Collection:</h3>
+      <CollectionSelector />
       <h3>Prompt:</h3>
       <Textarea
         className="w-full mb-4 h-32"
