@@ -44,7 +44,9 @@ const PromptDialog: React.FC<PromptDialogProps> = ({ prompt, isOpen, onClose }) 
               <DialogDescription className="space-y-2">
                 <div>
                   <label className="font-medium">Creado:</label>
-                  <div className="mt-2">{new Date(prompt?.created_at).toLocaleDateString()}</div>
+                  <div className="mt-2">
+                    {prompt?.created_at ? new Date(prompt.created_at).toLocaleDateString() : 'Date not available'}
+                  </div>
                 </div>
                 <div>
                   <label className="font-medium">Prompt:</label>

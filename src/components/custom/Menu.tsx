@@ -1,8 +1,9 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { TagIcon, LayoutGridIcon } from "lucide-react";
+import { TagIcon } from "lucide-react";
 import { ProjectDialog } from "./ProjectDialog";
 import { ModelDialog } from "./ModelDialog";
+import { CollectionDialog } from "./CollectionDialog";
 
 const Menu: React.FC = () => {
   return (
@@ -14,9 +15,7 @@ const Menu: React.FC = () => {
           <Button variant="ghost" size="sm">
             <TagIcon className="mr-2 h-4 w-4" /> Tags
           </Button>
-          <Button variant="ghost" size="sm">
-            <LayoutGridIcon className="mr-2 h-4 w-4" /> Collections
-          </Button>
+          <CollectionDialog />
         </div>
       </div>
     </div>

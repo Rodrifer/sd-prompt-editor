@@ -1,6 +1,6 @@
 // src/services/database.service.ts
 import { supabase } from "@/lib/supabase";
-import { User, Project, Model, ModelConfig, Prompt, Image } from "../types/supabase";
+import { User, Project, Model, ModelConfig, Prompt, Image, Collection } from "../types/supabase";
 import { ModelApiConfig } from "@/types/model-config";
 
 export const DatabaseService = {
@@ -353,4 +353,22 @@ export const DatabaseService = {
       };
     }
   },
+
+  createCollection: async (collection: {
+    user_id: string;
+    name: string;
+    description?: string;
+  }): Promise<Collection> => {
+    const { data, error } = await supabase
+      .from("collections")
+      .insert([collection])
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  }
 };

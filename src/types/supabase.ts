@@ -293,7 +293,30 @@ export type Database = {
           }
         ];
       };
-      // Add other tables similarly...
+      collections: {
+        Row: {
+          id: string;
+          name: string;
+          description: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -311,3 +334,5 @@ export type Model = Database["public"]["Tables"]["models"]["Row"];
 export type ModelConfig = Database["public"]["Tables"]["model_configs"]["Row"];
 export type Prompt = Database["public"]["Tables"]["prompts"]["Row"];
 export type Image = Database["public"]["Tables"]["images"]["Row"];
+export type Collection = Database["public"]["Tables"]["collections"]["Row"];
+
