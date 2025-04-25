@@ -83,10 +83,10 @@ const Sidebar: React.FC = () => {
         prompt,
         project,
         model,
-        //configId,
+        '',
         negativePrompt,
-        //size,
-        //metadata
+        '',
+        {}
       );
 
       if (status !== "success") {
